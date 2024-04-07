@@ -15,17 +15,25 @@ public class YearWheel extends Wheel
     private int defaultStartYear;
     private int defaultEndYear;
 
+    private int defaultStartYearBuddhist;
+
+    private int defaultEndYearBuddhist;
+
     public YearWheel(final Picker picker, final State id) {
         super(picker, id);
+
+        this.defaultStartYearBuddhist = 1900+543;
+        this.defaultEndYearBuddhist = 2100+543;
         this.defaultStartYear = 1900;
         this.defaultEndYear = 2100;
     }
+
+
 
     @Override
     public ArrayList<String> getValues() {
         ArrayList<String> values = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
-
         final int startYear = getStartYear();
         final int endYear = getEndYear();
         int max = endYear - startYear;
@@ -36,12 +44,14 @@ public class YearWheel extends Wheel
             values.add(getLocaleString(cal));
             cal.add(Calendar.YEAR, 1);
         }
-
         return values;
     }
 
     private int getEndYear() {
         if (state.getMaximumDate() == null) {
+            if(state.getLocale().toString().equals("th_TH")){
+                return this.defaultEndYearBuddhist;
+            }
             return this.defaultEndYear;
         }
         return state.getMaximumDate().get(Calendar.YEAR);
@@ -49,6 +59,9 @@ public class YearWheel extends Wheel
 
     private int getStartYear() {
         if (state.getMinimumDate() == null) {
+            if(state.getLocale().toString().equals("th_TH")){
+                return this.defaultStartYearBuddhist;
+            }
             return this.defaultStartYear;
         }
         return state.getMinimumDate().get(Calendar.YEAR);
